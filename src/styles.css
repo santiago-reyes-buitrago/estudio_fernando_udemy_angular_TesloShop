@@ -2,3 +2,24 @@
 @plugin "daisyui" {
   themes: luxury --default;
 }
+
+@layer base {
+  @font-face {
+    font-family: "Montserrat";
+    src: url("/assets/fonts/Montserrat-Medium.ttf")
+    format("truetype");
+  }
+}
+
+
+@theme {
+  --font-montserrat: "Montserrat", sans-serif;
+  --animate-fadeIn: fadeIn 0.3s ease-in-out;
+  @keyframes fadeIn {
+    0% {opacity: 0}
+    100% {
+      opacity: 1;
+    }
+  }
+
+}
