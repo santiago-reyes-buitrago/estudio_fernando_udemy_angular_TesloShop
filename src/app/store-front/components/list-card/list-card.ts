@@ -1,5 +1,6 @@
 import {Component, input} from '@angular/core';
 import {Card} from '@store-front/components/card/card';
+import {Product} from '@products/interfaces/product-response.interface';
 
 @Component({
   selector: 'store-list-card',
@@ -10,5 +11,5 @@ import {Card} from '@store-front/components/card/card';
   styleUrl: './list-card.css'
 })
 export class ListCard {
-  data = input.required<any>()
+  data = input.required<Product[]>()
 }

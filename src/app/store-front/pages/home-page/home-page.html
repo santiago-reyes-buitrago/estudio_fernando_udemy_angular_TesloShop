@@ -1,4 +1,5 @@
 <h1 class="text-3xl font-bold font-montserrat">Todos los productos</h1>
 <h2 class="text-xl mb-5">Para todos los gustos</h2>
-
-<store-list-card [data]="[1,2,3,4,5,6,7,8,9,0]"/>
+@if (!productResource.isLoading()) {
+  <store-list-card [data]="productResource.value()?.products!"/>
+}

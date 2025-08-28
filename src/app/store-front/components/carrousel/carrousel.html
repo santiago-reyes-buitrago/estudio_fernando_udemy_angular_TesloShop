@@ -1,0 +1,10 @@
+<div class="carousel w-full">
+  @for (image of images(); track image;let index=$index){
+    <carrousel-item [image]="image" [alt]="`${index}-image`" [id]="index"/>
+  }
+</div>
+<div class="flex w-full justify-center gap-2 py-2">
+  @for (image of images(); track image;let index=$index){
+    <a [href]="`#${index}`" class="btn btn-xs">{{index}}</a>
+  }
+</div>
