@@ -1,6 +1,6 @@
 <div class="card bg-base-100 shadow-sm animate-fadeIn">
   @if (!imageResource.isLoading()){
-    <list-carrousel [images]="imageResource.value()!"/>
+    <product-list-carrousel [images]="imageResource.value()!"/>
   }
   <div class="card-body">
     <h2 class="card-title ">{{data().title}}</h2>

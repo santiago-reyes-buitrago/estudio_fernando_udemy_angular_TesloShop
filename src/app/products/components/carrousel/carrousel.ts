@@ -1,8 +1,8 @@
 import {Component, input} from '@angular/core';
-import {CarrouselItem} from '@store-front/components/carrousel-item/carrousel-item';
+import {CarrouselItem} from '@products/components/carrousel-item/carrousel-item';
 
 @Component({
-  selector: 'list-carrousel',
+  selector: 'product-list-carrousel',
   imports: [
     CarrouselItem
   ],

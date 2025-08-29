@@ -4,16 +4,13 @@ import {Product} from '@products/interfaces/product-response.interface';
 import {DecimalPipe, JsonPipe, NgOptimizedImage, UpperCasePipe} from '@angular/common';
 import {rxResource} from '@angular/core/rxjs-interop';
 import {ProductService} from '@products/services/product.service';
-import {Carrousel} from '@store-front/components/carrousel/carrousel';
+import {Carrousel} from '@products/components/carrousel/carrousel';
 
 @Component({
-  selector: 'store-card',
+  selector: 'product-card',
   imports: [
     RouterLink,
-    JsonPipe,
-    UpperCasePipe,
     DecimalPipe,
-    NgOptimizedImage,
     Carrousel
   ],
   templateUrl: './card.html',

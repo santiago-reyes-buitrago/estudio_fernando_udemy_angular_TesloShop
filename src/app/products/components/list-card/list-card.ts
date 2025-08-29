@@ -1,9 +1,9 @@
 import {Component, input} from '@angular/core';
-import {Card} from '@store-front/components/card/card';
+import {Card} from '@products/components/card/card';
 import {Product} from '@products/interfaces/product-response.interface';
 
 @Component({
-  selector: 'store-list-card',
+  selector: 'product-list-card',
   imports: [
     Card
   ],
