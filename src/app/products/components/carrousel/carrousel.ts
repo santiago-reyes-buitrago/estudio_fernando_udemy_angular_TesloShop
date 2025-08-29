@@ -11,4 +11,5 @@ import {CarrouselItem} from '@products/components/carrousel-item/carrousel-item'
 })
 export class Carrousel {
   images = input.required<string[]>()
+  vertical = input<boolean>(false)
 }

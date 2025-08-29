@@ -1,4 +1,4 @@
-<div class="carousel carousel-vertical rounded-box h-96">
+<div [class]="`carousel ${vertical() ? 'carousel-vertical h-96':''} rounded-box`">
   @for (image of images(); track image;let index=$index){
     <product-image-carrousel-item [image]="image" [alt]="`${index}-image`" [id]="`${index}-${image}`"/>
   }

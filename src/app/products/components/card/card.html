@@ -1,13 +1,13 @@
 <div class="card bg-base-100 shadow-sm animate-fadeIn">
   @if (!imageResource.isLoading()){
-    <product-list-carrousel [images]="imageResource.value()!"/>
+    <product-list-carrousel [images]="imageResource.value()!" [vertical]="true"/>
   }
   <div class="card-body">
     <h2 class="card-title ">{{data().title}}</h2>
     <p>{{data().description}}</p>
     <p>Existencias: {{data().stock | number}}</p>
     <div class="card-actions justify-end">
-      <a [routerLink]="['/product','t-shirt']">Ver mas</a>
+      <a [routerLink]="['/product',data().id]">Ver mas</a>
     </div>
   </div>
 </div>

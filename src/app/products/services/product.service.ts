@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import type {ProductResponse} from '@products/interfaces/product-response.interface';
+import type {Product, ProductResponse} from '@products/interfaces/product-response.interface';
 import {forkJoin, map, Observable, switchMap, tap} from 'rxjs';
 import {environment} from '../../../environments/environment';
 
@@ -37,6 +37,10 @@ export class ProductService {
       // })),
       tap(resp => console.log(resp))
     );
+  }
+
+  getProduct(idSlug: string):Observable<Product>{
+    return this.http.get<Product>(`${baseUrl}/products/${idSlug}`,{})
   }
 
   getFileProductsImageArray(image: string[]):Observable<string[]> {
