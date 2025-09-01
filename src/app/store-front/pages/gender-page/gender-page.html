@@ -1,1 +1,7 @@
-<p>gender-page works!</p>
+<h1 class="text-3xl font-bold font-montserrat">Todos los productos para <span class="text-accent">{{gender()}}</span></h1>
+<h2 class="text-xl mb-5">Para todos los gustos</h2>
+@if (!genderResource.isLoading()) {
+  @if (genderResource.hasValue()){
+    <product-list-card [data]="genderResource.value()?.products!"/>
+  }
+}

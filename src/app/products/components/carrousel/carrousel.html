@@ -1,5 +1,19 @@
-<div [class]="`carousel ${vertical() ? 'carousel-vertical h-96':''} rounded-box`">
-  @for (image of images(); track image;let index=$index){
-    <product-image-carrousel-item [image]="image" [alt]="`${index}-image`" [id]="`${index}-${image}`"/>
-  }
+<!-- Slider main container -->
+<div class="swiper" #swiperContainer>
+  <!-- Additional required wrapper -->
+  <div class="swiper-wrapper">
+    @for (image of images(); track image;let index=$index){
+      <product-image-carrousel-item  class="swiper-slide" [image]="image" [alt]="`${index}-image`" [id]="`${index}-${image}`"/>
+    }
+  </div>
+
+  <!-- If we need pagination -->
+  <div class="swiper-pagination"></div>
+
+  <!-- If we need navigation buttons -->
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+
+  <!-- If we need scrollbar -->
+  <div class="swiper-scrollbar"></div>
 </div>
