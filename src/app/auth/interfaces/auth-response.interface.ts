@@ -6,3 +6,7 @@ export interface UserResponse {
   email:    string;
 }
 
+export interface AuthResponse {
+  user:  UserResponse;
+  token: string;
+}
