@@ -44,9 +44,7 @@ export class ProductService {
   }
 
   getFileProductsImageArray(image: string[]):Observable<string[]> {
-    return forkJoin(image.map(item => this.getFileProductsImage(item))).pipe(
-      tap(resp => console.log('images',resp))
-    );
+    return forkJoin(image.map(item => this.getFileProductsImage(item)));
   }
 
   getFileProductsImage(image: string){

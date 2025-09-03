@@ -33,7 +33,18 @@
       </li>
     </ul>
   </div>
-  <div class="navbar-end">
-    <a class="btn">Button</a>
+  <div class="navbar-end gap-4">
+    @if (authService.authStatus() === 'authenticated'){
+      <button class="btn btn-ghost">
+        {{authService.user()?.fullName}}
+      </button>
+      <button class="btn btn-secondary btn-sm" (click)="authService.logout()">Salir</button>
+    }
+    @else if (authService.authStatus() == 'non-authenticated') {
+      <a class="btn btn-secondary" routerLink="/auth/login">Iniciar Sesion</a>
+    } @else {
+      <a class="btn btn-ghost">...</a>
+    }
+
   </div>
 </div>
