@@ -1,7 +1,5 @@
 <div class="card bg-base-100 shadow-sm animate-fadeIn">
-  @if (!imageResource.isLoading()){
-    <product-list-carrousel [images]="imageResource.value()!" direction="horizontal"/>
-  }
+  <product-list-carrousel [images]="data().images!" direction="horizontal"/>
   <div class="card-body">
     <h2 class="card-title ">{{data().title}}</h2>
     <p>{{data().description}}</p>

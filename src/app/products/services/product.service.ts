@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import type {Product, ProductResponse} from '@products/interfaces/product-response.interface';
-import {forkJoin, map, Observable, switchMap, tap} from 'rxjs';
+import {catchError, forkJoin, map, Observable, switchMap, tap} from 'rxjs';
 import {environment} from '../../../environments/environment';
 
 const baseUrl = environment.baseURl;
@@ -29,12 +29,10 @@ export class ProductService {
       }
     }).pipe(
       switchMap(({products,...rest}) => {
-        const img$ = products.map(({images,...rest}) => ({
-          images: this.getFileProductsImageArray(images).pipe(
-            map(images => images),
-          )
-        }))
-        return forkJoin([img$]).pipe(
+        const img$ = products.map(({images,...rest}) => this.getFileProductsImageArray(images).pipe(
+          map(images => images),
+        ))
+        return forkJoin(img$).pipe(
           map(imagess => ({
             ...rest,
             products: products.map(({images, ...restp},index) => ({

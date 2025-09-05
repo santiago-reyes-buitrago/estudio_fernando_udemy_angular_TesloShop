@@ -19,13 +19,5 @@ import {Carrousel} from '@products/components/carrousel/carrousel';
 export class Card {
   private productService = inject(ProductService);
   data = input.required<Product>()
-  imageResource = rxResource({
-    params: () => ({
-      image: this.data().images
-    }),
-    stream: ({params}) => {
-      return this.productService.getFileProductsImageArray(params.image)
-    }
-  })
 
 }

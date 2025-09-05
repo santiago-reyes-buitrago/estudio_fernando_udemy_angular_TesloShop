@@ -22,9 +22,7 @@ export class ProductsAdminPage {
     stream: ({params}) => {return this.productsService.getProducts({
       limit: params.limit,
       offset: params.page*params.limit
-    }).pipe(
-
-    )}
+    })}
   })
 
   handlePage(number: number) {
