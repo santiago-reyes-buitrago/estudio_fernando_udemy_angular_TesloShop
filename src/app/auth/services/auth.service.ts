@@ -15,7 +15,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private _authStatus = signal<AuthStatus>('checking');
   private _user = signal<UserResponse|null>(null);
-  private _token = signal<string|null>(null);
+  private _token = signal<string|null>(localStorage.getItem('token') ?? null);
 
 
   checkStatusResource = rxResource(({
@@ -30,12 +30,23 @@ export class AuthService {
 
   user = computed<UserResponse|null>(() => this._user());
 
-  token = computed(() => this._token);
+  token = computed(() => this._token());
 
   login(email:string,password:string):Observable<boolean> {
     return this.http.post<AuthResponse>(`${baseUrl}/auth/login`, {
       email,
       password
+    }).pipe(
+      map(resp => this.handleLoginSuccess(resp)),
+      catchError((err:any) => this.handleLoginError(err))
+    )
+  }
+
+  register({fullName,password,email}:{email: string, password: string, fullName: string}):Observable<boolean> {
+    return this.http.post<AuthResponse>(`${baseUrl}/auth/register`, {
+      email,
+      password,
+      fullName
     }).pipe(
       map(resp => this.handleLoginSuccess(resp)),
       catchError((err:any) => this.handleLoginError(err))
@@ -50,9 +61,9 @@ export class AuthService {
     }
 
     return this.http.get<AuthResponse>(`${baseUrl}/auth/check-status`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      // headers: {
+      //   Authorization: `Bearer ${token}`
+      // }
     }).pipe(
       map(resp => this.handleLoginSuccess(resp)),
       catchError((err:any) => this.handleLoginError(err))

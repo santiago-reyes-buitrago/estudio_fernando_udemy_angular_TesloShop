@@ -28,13 +28,6 @@ export class ProductService {
         gender
       }
     }).pipe(
-      // map(({products,...rest}) => ({
-      //   ...rest,
-      //   products: products.map(({images,...rest}) => ({
-      //     ...rest,
-      //     images: this.getFileProductsImageArray(images)
-      //   }))
-      // })),
       tap(resp => console.log(resp))
     );
   }

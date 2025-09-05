@@ -1,0 +1,12 @@
+@if (productResource.hasValue()){
+  <h1 class="text-2xl font-bold">Listado de productos</h1>
+  <h3 class="text-lg">
+    Total de productos <span class="text-accent">{{productResource.value().count}}</span>
+  </h3>
+  <div class="join">
+    <button class="join-item btn" (click)="handlePage(-1)" [disabled]="parameters().page <= 0">«</button>
+    <button class="join-item btn">Pagina {{this.parameters().page + 1}}</button>
+    <button class="join-item btn" (click)="handlePage(1)" [disabled]="parameters().page >= productResource.value().pages-1">»</button>
+  </div>
+  <product-table [products]="productResource.value().products"/>
+}
