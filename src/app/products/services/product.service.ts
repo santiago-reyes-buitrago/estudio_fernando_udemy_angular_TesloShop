@@ -28,6 +28,22 @@ export class ProductService {
         gender
       }
     }).pipe(
+      switchMap(({products,...rest}) => {
+        const img$ = products.map(({images,...rest}) => ({
+          images: this.getFileProductsImageArray(images).pipe(
+            map(images => images),
+          )
+        }))
+        return forkJoin([img$]).pipe(
+          map(imagess => ({
+            ...rest,
+            products: products.map(({images, ...restp},index) => ({
+              ...restp,
+              images: imagess[index]
+            }))
+          }))
+        )
+      }),
       tap(resp => console.log(resp))
     );
   }
