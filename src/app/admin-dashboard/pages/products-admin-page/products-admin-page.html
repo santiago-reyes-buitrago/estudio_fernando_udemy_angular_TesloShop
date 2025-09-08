@@ -4,9 +4,15 @@
     Total de productos <span class="text-accent">{{productResource.value().count}}</span>
   </h3>
   <div class="join">
-    <button class="join-item btn" (click)="handlePage(-1)" [disabled]="parameters().page <= 0">«</button>
-    <button class="join-item btn">Pagina {{this.parameters().page + 1}}</button>
-    <button class="join-item btn" (click)="handlePage(1)" [disabled]="parameters().page >= productResource.value().pages-1">»</button>
+    <button class="join-item btn" (click)="handleParamaters(parameters().page-1,'page')" [disabled]="parameters().page <= 0">«</button>
+    <button class="join-item btn">Pagina {{parameters().page + 1}}</button>
+    <button class="join-item btn" (click)="handleParamaters(parameters().page+1,'page')" [disabled]="parameters().page >= productResource.value().pages-1">»</button>
   </div>
+  <select class="select select-bordered w-32" #limit [value]="parameters().limit" (change)="handleParamaters(+limit.value,'limit')">
+    <option [value]="10">10</option>
+    <option [value]="20">20</option>
+    <option [value]="30">30</option>
+    <option [value]="40">40</option>
+  </select>
   <product-table [products]="productResource.value().products"/>
 }

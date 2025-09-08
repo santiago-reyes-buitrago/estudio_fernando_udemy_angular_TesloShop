@@ -9,7 +9,7 @@ import {isAdminGuard} from '@auth/guards/is-admin-guard';
     path: '', component: AdminDashboardLayout,
     children: [
       {path: 'products', component: ProductsAdminPage},
-      {path: 'product/:id', component: ProductAdminPage},
+      {path: 'products/:id', component: ProductAdminPage},
       {path: '**', redirectTo: 'products'},
     ]
   }

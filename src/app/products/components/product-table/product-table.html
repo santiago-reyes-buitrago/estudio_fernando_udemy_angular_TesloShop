@@ -10,7 +10,7 @@
       </th>
       <th>Titulo</th>
       <th>Precio</th>
-      <th>Invetnario</th>
+      <th>Inventario</th>
       <th></th>
     </tr>
     </thead>
@@ -32,7 +32,7 @@
                 </div>
               </div>
               <div>
-                <a [routerLink]="['/admin/product', product.id]" class="font-bold">{{product.title}}</a>
+                <a [routerLink]="['/admin/products', product.id]" class="font-bold hover:text-accent transition-colors duration-300">{{product.title}}</a>
                 <div class="text-sm opacity-50">{{product.sizes.join(', ')}}</div>
               </div>
             </div>

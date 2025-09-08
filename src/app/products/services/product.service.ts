@@ -47,7 +47,20 @@ export class ProductService {
   }
 
   getProduct(idSlug: string):Observable<Product>{
-    return this.http.get<Product>(`${baseUrl}/products/${idSlug}`,{})
+    return this.http.get<Product>(`${baseUrl}/products/${idSlug}`,{}).pipe(
+      switchMap(({images,...rest}) => {
+        const img$ = this.getFileProductsImageArray(images).pipe(
+          map(images => images),
+        )
+        return forkJoin(img$).pipe(
+          map(imagess => ({
+            ...rest,
+            images: imagess[0]
+          }))
+        )
+      }),
+      tap(resp => console.log(resp))
+    );
   }
 
   getFileProductsImageArray(image: string[]):Observable<string[]> {
