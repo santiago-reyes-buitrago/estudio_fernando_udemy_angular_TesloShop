@@ -52,7 +52,7 @@ export class ProductService {
         const img$ = this.getFileProductsImageArray(images).pipe(
           map(images => images),
         )
-        return forkJoin(img$).pipe(
+        return forkJoin([img$]).pipe(
           map(imagess => ({
             ...rest,
             images: imagess[0]
@@ -75,5 +75,9 @@ export class ProductService {
         return URL.createObjectURL(resp);
       })
     );
+  }
+
+  updateProduct(producLike: Partial<Product>){
+    console.log(producLike,'Actualizando producto');
   }
 }
