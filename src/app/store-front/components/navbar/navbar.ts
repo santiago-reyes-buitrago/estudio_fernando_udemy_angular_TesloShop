@@ -13,4 +13,8 @@ import {AuthService} from '@auth/services/auth.service';
 })
 export class Navbar {
   protected authService = inject(AuthService);
+
+  protected checkRole(){
+    return this.authService.user()?.roles.find((item) => ['admin'].includes(item))
+  }
 }

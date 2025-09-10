@@ -3,6 +3,7 @@ import {ProductTable} from '@products/components/product-table/product-table';
 import {ProductService} from '@products/services/product.service';
 import {rxResource} from '@angular/core/rxjs-interop';
 import {FormsModule} from '@angular/forms';
+import {RouterLink} from '@angular/router';
 
 type TypeParameter = 'limit'|'page';
 
@@ -10,7 +11,8 @@ type TypeParameter = 'limit'|'page';
   selector: 'app-products-admin-page',
   imports: [
     ProductTable,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   templateUrl: './products-admin-page.html',
   styleUrl: './products-admin-page.css'

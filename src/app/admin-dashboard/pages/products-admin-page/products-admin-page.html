@@ -14,5 +14,13 @@
     <option [value]="30">30</option>
     <option [value]="40">40</option>
   </select>
+  <div class="flex flex-1">
+    <button
+      class="btn btn-primary"
+      routerLink="/admin/products/new"
+    >
+      Nuevo Producto
+    </button>
+  </div>
   <product-table [products]="productResource.value().products"/>
 }

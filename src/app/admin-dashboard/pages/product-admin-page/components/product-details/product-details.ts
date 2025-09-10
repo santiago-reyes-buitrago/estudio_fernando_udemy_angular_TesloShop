@@ -26,7 +26,7 @@ export class ProductDetails implements OnInit {
     price: ['', [Validators.required,Validators.min(0)]],
     stock: ['', [Validators.required,Validators.min(0)]],
     sizes: [[''],],
-    images: [[],],
+    images: [[''],],
     tags: ['',],
     gender: ['men',[Validators.required,Validators.pattern(/men|women|kid|unisex]/)]]
   })
@@ -66,9 +66,12 @@ export class ProductDetails implements OnInit {
       ...(formValue as any),
       tags: formValue.tags?.toLowerCase()
         .split(',').map(tag => tag.trim()) ?? []
+
     }
     console.log({productLike})
-    this.productService.updateProduct(productLike);
+    this.productService.updateProduct(this.product().id,productLike).subscribe((product) => {
+      console.log(`Producto actualizado `,product)
+    })
   }
 
   protected readonly FormUtils = FormUtils;

@@ -18,6 +18,7 @@ export interface Product {
   user:        UserResponse;
   slug:        string;
   tags:        Tag[];
+  imagesURL?: string[];
 }
 
 export enum Gender {

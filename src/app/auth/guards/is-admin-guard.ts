@@ -8,7 +8,6 @@ export const isAdminGuard: CanMatchFn = async (route, segments) => {
   const router = inject(Router);
   const requiredRoles = ['admin'];
   await firstValueFrom(authService.checkStatus())
-  console.log(authService.user()?.roles)
   if (!authService.user()?.roles.find((item) => requiredRoles.includes(item))){
     router.navigateByUrl('/');
     return false;

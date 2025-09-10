@@ -1,8 +1,9 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import type {Product, ProductResponse} from '@products/interfaces/product-response.interface';
-import {catchError, forkJoin, map, Observable, switchMap, tap} from 'rxjs';
+import {Gender, Product, ProductResponse} from '@products/interfaces/product-response.interface';
+import {catchError, forkJoin, map, Observable, of, switchMap, tap} from 'rxjs';
 import {environment} from '../../../environments/environment';
+import {UserResponse} from '@auth/interfaces/auth-response.interface';
 
 const baseUrl = environment.baseURl;
 
@@ -12,6 +13,20 @@ interface Options {
   gender?: string;
 }
 
+const emptyProduct: Product = {
+  description: '',
+  gender: Gender.Men,
+  id: 'new',
+  images: [],
+  price: 0,
+  sizes: [],
+  slug: '',
+  stock: 0,
+  tags: [],
+  title: '',
+  user: {} as UserResponse
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,25 +34,30 @@ export class ProductService {
   private http = inject(HttpClient);
 
   getProducts(options: Options): Observable<ProductResponse> {
-    const {limit=0,offset=0,gender=''} = options;
+    const {limit = 0, offset = 0, gender = ''} = options;
 
-    return this.http.get<ProductResponse>(`${baseUrl}/products`,{
+    return this.http.get<ProductResponse>(`${baseUrl}/products`, {
       params: {
         limit,
         offset,
         gender
       }
     }).pipe(
-      switchMap(({products,...rest}) => {
-        const img$ = products.map(({images,...rest}) => this.getFileProductsImageArray(images).pipe(
+      switchMap(({products, ...rest}) => {
+        const img$ = products.map(({images}) => this.getFileProductsImageArray(images).pipe(
           map(images => images),
+          catchError(err => {
+            console.error(err);
+            return of([])
+          })
         ))
         return forkJoin(img$).pipe(
           map(imagess => ({
             ...rest,
-            products: products.map(({images, ...restp},index) => ({
+            products: products.map(({images, ...restp}, index) => ({
               ...restp,
-              images: imagess[index]
+              imagesURL: imagess[index],
+              images: images
             }))
           }))
         )
@@ -46,16 +66,20 @@ export class ProductService {
     );
   }
 
-  getProduct(idSlug: string):Observable<Product>{
-    return this.http.get<Product>(`${baseUrl}/products/${idSlug}`,{}).pipe(
-      switchMap(({images,...rest}) => {
+  getProduct(idSlug: string): Observable<Product> {
+    if (idSlug === emptyProduct.id){
+      return of(emptyProduct);
+    }
+    return this.http.get<Product>(`${baseUrl}/products/${idSlug}`, {}).pipe(
+      switchMap(({images, ...rest}) => {
         const img$ = this.getFileProductsImageArray(images).pipe(
           map(images => images),
         )
         return forkJoin([img$]).pipe(
           map(imagess => ({
             ...rest,
-            images: imagess[0]
+            imagesURL: imagess[0],
+            images: images
           }))
         )
       }),
@@ -63,11 +87,11 @@ export class ProductService {
     );
   }
 
-  getFileProductsImageArray(image: string[]):Observable<string[]> {
+  getFileProductsImageArray(image: string[]): Observable<string[]> {
     return forkJoin(image.map(item => this.getFileProductsImage(item)));
   }
 
-  getFileProductsImage(image: string){
+  getFileProductsImage(image: string) {
     return this.http.get(`${baseUrl}/files/product/${image}`, {
       responseType: 'blob'
     }).pipe(
@@ -77,7 +101,12 @@ export class ProductService {
     );
   }
 
-  updateProduct(producLike: Partial<Product>){
-    console.log(producLike,'Actualizando producto');
+  updateProduct(id: string,producLike: Partial<Product>) {
+    return this.http.patch<Product>(`${baseUrl}/products/${id}`, producLike).pipe(
+      catchError(err => {
+        console.error(err)
+        return of([])
+      })
+    )
   }
 }
