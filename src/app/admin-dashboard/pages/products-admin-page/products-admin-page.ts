@@ -21,7 +21,7 @@ export class ProductsAdminPage {
   productsService = inject(ProductService);
   parameters = signal({
     limit: 10,
-    page:1
+    page:0
   })
   productResource = rxResource({
     params: () => this.parameters(),

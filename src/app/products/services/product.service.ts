@@ -67,7 +67,8 @@ export class ProductService {
   }
 
   getProduct(idSlug: string): Observable<Product> {
-    if (idSlug === emptyProduct.id){
+    console.log({idSlug});
+    if (idSlug === emptyProduct.id) {
       return of(emptyProduct);
     }
     return this.http.get<Product>(`${baseUrl}/products/${idSlug}`, {}).pipe(
@@ -88,6 +89,9 @@ export class ProductService {
   }
 
   getFileProductsImageArray(image: string[]): Observable<string[]> {
+    if (image.length === 0) {
+      return of([]);
+    }
     return forkJoin(image.map(item => this.getFileProductsImage(item)));
   }
 
@@ -101,8 +105,17 @@ export class ProductService {
     );
   }
 
-  updateProduct(id: string,producLike: Partial<Product>) {
-    return this.http.patch<Product>(`${baseUrl}/products/${id}`, producLike).pipe(
+  createProduct(productLike: Partial<Product>):Observable<Product> {
+    return this.http.post<Product>(`${baseUrl}/products`, productLike).pipe(
+      catchError(err => {
+        console.error(err)
+        return of(emptyProduct)
+      })
+    )
+  }
+
+  updateProduct(id: string, productLike: Partial<Product>) {
+    return this.http.patch<Product>(`${baseUrl}/products/${id}`, productLike).pipe(
       catchError(err => {
         console.error(err)
         return of([])

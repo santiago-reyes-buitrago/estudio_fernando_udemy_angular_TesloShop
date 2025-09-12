@@ -1,9 +1,10 @@
-import {Component, inject, input, OnInit} from '@angular/core';
+import {Component, effect, inject, input, OnInit, signal} from '@angular/core';
 import {Carrousel} from '@products/components/carrousel/carrousel';
 import {Product} from '@products/interfaces/product-response.interface';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FormUtils} from '@utils/form-utils';
 import {ProductService} from '@products/services/product.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'product-details',
@@ -15,10 +16,12 @@ import {ProductService} from '@products/services/product.service';
   styleUrl: './product-details.css'
 })
 export class ProductDetails implements OnInit {
+  router = inject(Router);
   fb = inject(FormBuilder);
   productService = inject(ProductService);
   product = input.required<Product>()
-
+  wasSaved = signal<boolean>(false);
+  msg = signal<string>('');
   productForm = this.fb.group({
     title: ['', Validators.required],
     description: ['',Validators.required],
@@ -56,8 +59,8 @@ export class ProductDetails implements OnInit {
   }
 
   onSubmit() {
+    const validIdCreate = ['new'];
     if (!this.productForm.valid) {
-      console.log(this.productForm.value,{isValid: this.productForm.valid})
       this.productForm.markAllAsTouched();
       return;
     }
@@ -68,11 +71,35 @@ export class ProductDetails implements OnInit {
         .split(',').map(tag => tag.trim()) ?? []
 
     }
-    console.log({productLike})
+    if (validIdCreate.includes(this.product().id)){
+      this.productService.createProduct(productLike).subscribe((product) => {
+        console.log(`Producto creado `,product)
+        this.wasSaved.set(true)
+        this.msg.set(`Producto creado `)
+        this.router.navigate(['/admin/products',product.id]);
+      })
+      return;
+    }
+
     this.productService.updateProduct(this.product().id,productLike).subscribe((product) => {
       console.log(`Producto actualizado `,product)
+      this.wasSaved.set(true)
+      this.msg.set(`Producto actualizado`)
     })
   }
+
+
+  closeModal = effect((onCleanup) => {
+    if (this.wasSaved()){
+      const show = setTimeout(() => {
+        this.wasSaved.set(false);
+      },3000)
+
+      onCleanup(() => clearTimeout(show))
+    }
+
+
+  })
 
   protected readonly FormUtils = FormUtils;
 }

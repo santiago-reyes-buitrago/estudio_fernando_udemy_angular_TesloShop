@@ -4,6 +4,8 @@
   <div class="swiper-wrapper">
     @for (image of images(); track image;let index=$index){
       <product-image-carrousel-item  class="swiper-slide" [image]="image" [alt]="`${index}-image`" [id]="`${index}-${image}`"/>
+    } @empty {
+      <product-image-carrousel-item  class="swiper-slide" [image]="''" [alt]="`product`" [id]="`product`"/>
     }
   </div>
 

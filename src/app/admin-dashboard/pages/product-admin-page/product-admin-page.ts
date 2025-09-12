@@ -18,7 +18,7 @@ export class ProductAdminPage {
   router = inject(Router);
   productService = inject(ProductService);
   productID = toSignal(this.activatedRoute.params.pipe(
-    map(params => params['id']),
+    map((params) => params['id']),
   ));
   productResource = rxResource({
     params: () => ({
@@ -31,6 +31,7 @@ export class ProductAdminPage {
 
   redirectEffect = effect(()=> {
     if (this.productResource.error()) {
+      console.log(this.productResource.error());
       this.router.navigate(['/admin/products']);
     }
   })
