@@ -7,13 +7,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import {Navigation, Pagination} from 'swiper/modules';
-import {ProductImagePipe} from '@products/pipes/product-image-pipe';
 
 @Component({
   selector: 'product-list-carrousel',
   imports: [
     CarrouselItem,
-    ProductImagePipe
+
   ],
   templateUrl: './carrousel.html',
   styleUrl: './carrousel.css'
