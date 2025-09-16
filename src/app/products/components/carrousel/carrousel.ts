@@ -36,7 +36,13 @@ export class Carrousel implements AfterViewInit,OnChanges{
       return;
     }
     this.swipper()?.destroy(true,true)
-    this.swipperInited();
+
+    const pagination: HTMLDivElement = this.swiperContainer().nativeElement?.querySelector('.swiper-pagination');
+    pagination.innerHTML = '';
+
+    setTimeout(() => {
+      this.swipperInited();
+    },500)
   }
 
   swipperInited(): void {

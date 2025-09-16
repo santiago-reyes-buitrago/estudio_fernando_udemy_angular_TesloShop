@@ -77,7 +77,7 @@ export class ProductDetails implements OnInit {
 
     }
     if (validIdCreate.includes(this.product().id)){
-      this.productService.createProduct(productLike).subscribe((product) => {
+      this.productService.createProduct(productLike,this.imageFileList!).subscribe((product) => {
         console.log(`Producto creado `,product)
         this.wasSaved.set(true)
         this.msg.set(`Producto creado `)
@@ -86,7 +86,7 @@ export class ProductDetails implements OnInit {
       return;
     }
 
-    this.productService.updateProduct(this.product().id,productLike).subscribe((product) => {
+    this.productService.updateProduct(this.product().id,productLike,this.imageFileList!).subscribe((product) => {
       console.log(`Producto actualizado `,product)
       this.wasSaved.set(true)
       this.msg.set(`Producto actualizado`)
@@ -113,6 +113,5 @@ export class ProductDetails implements OnInit {
     this.imageFileList = files ?? null;
     const imageUrl = Array.from(files ?? []).map((item) => URL.createObjectURL(item));
     this.tempImages.set(imageUrl);
-    console.log(this.imagesArray());
   }
 }

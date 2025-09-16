@@ -105,21 +105,57 @@ export class ProductService {
     );
   }
 
-  createProduct(productLike: Partial<Product>):Observable<Product> {
-    return this.http.post<Product>(`${baseUrl}/products`, productLike).pipe(
-      catchError(err => {
-        console.error(err)
-        return of(emptyProduct)
-      })
+  createProduct(productLike: Partial<Product>,imageFileList?: FileList):Observable<Product> {
+    const currentImages = productLike.images ?? []
+    return this.uploadImages(imageFileList).pipe(
+      map(images => ({
+        ...productLike,
+        images: [...currentImages,...images]
+      })),
+      switchMap(createdProduct => this.http.post<Product>(`${baseUrl}/products`, createdProduct).pipe(
+        catchError(err => {
+          console.error(err)
+          return of(emptyProduct)
+        })
+      ))
+    )
+
+  }
+
+  updateProduct(id: string, productLike: Partial<Product>,imageFileList?: FileList):Observable<Product|{}> {
+    const currentImages = productLike.images ?? []
+    return this.uploadImages(imageFileList).pipe(
+      map(images => ({
+        ...productLike,
+        images: [...currentImages,...images]
+      })),
+      switchMap(updatedProduct => this.http.patch<Product>(`${baseUrl}/products/${id}`, updatedProduct).pipe(
+        catchError(err => {
+          console.error(err)
+          return of({})
+        })
+      ))
     )
   }
 
-  updateProduct(id: string, productLike: Partial<Product>) {
-    return this.http.patch<Product>(`${baseUrl}/products/${id}`, productLike).pipe(
-      catchError(err => {
-        console.error(err)
-        return of([])
-      })
+  uploadImages(images?: FileList): Observable<string[]> {
+    if (!images) return of([])
+    const uploadObservables = Array.from(images).map((image) => this.uploadImage(image));
+    return forkJoin(uploadObservables)
+  }
+
+  uploadImage(image?: File): Observable<string> {
+    if (!image) return of('');
+    const formData = new FormData();
+    formData.append('file', image);
+    return this.http.post<{fileName:string}>(`${baseUrl}/files/product`, formData).pipe(
+      map(resp => resp.fileName),
     )
   }
+
+
+  handleCreateAndUpdateProduct(imageList?: FileList){
+
+  }
+
 }
